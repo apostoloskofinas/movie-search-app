@@ -1,9 +1,8 @@
-// src/App.js
 import React, { useState } from 'react';
 import SearchBar from './components1/SearchBar';
 import MovieList from './components1/MovieList';
 import { fetchMovies } from './api/movieAPI';
-import IncrementButton from './components1/IncrementButton'; // Import IncrementButton component
+import IncrementButton from './components1/IncrementButton';
 import './App.css';
 
 function App() {
@@ -18,13 +17,20 @@ function App() {
     // Split the query into individual search terms
     const searchTerms = query.split(',').map(term => term.trim()).filter(term => term);
 
-    try {
-      // Create an array of promises for each search term
-      const results = await Promise.all(searchTerms.map(term => fetchMovies(term)));
+    // Array to hold all movie results
+    let allMovies = [];
 
-      // Aggregate results from all search terms
-      const allMovies = results.flatMap(result => result.movies);
-      setMovies(allMovies);
+    try {
+      // Process each search term sequentially
+      for (const term of searchTerms) {
+        try {
+          const result = await fetchMovies(term);
+          allMovies = allMovies.concat(result.movies);
+          setMovies([...allMovies]); // Update state with each new batch of movies
+        } catch (fetchError) {
+          console.error(`Error fetching movies for term "${term}":`, fetchError);
+        }
+      }
     } catch (error) {
       setError('Error fetching movies. Please try again.');
     } finally {
