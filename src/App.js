@@ -1,37 +1,34 @@
-// src/App.js
 import React, { useState } from 'react';
-import SearchBar from './components/SearchBar';
-import MovieList from './components/MovieList';
-import { fetchMovies } from './api/movieAPI'; // Εισαγωγή της συνάρτησης fetchMovies
+import SearchBar from './components1/SearchBar';
+import MovieList from './components1/MovieList';
+import { fetchMovies } from './api/movieAPI'; // Import fetchMovies function
+import IncrementButton from './components1/IncrementButton'; // Import IncrementButton component
 import './App.css';
 
 function App() {
-  // Δημιουργία των state variables χρησιμοποιώντας useState hook
-  const [movies, setMovies] = useState([]); // State για αποθήκευση της λίστας ταινιών
-  const [loading, setLoading] = useState(false); // State για την ένδειξη φόρτωσης
-  const [error, setError] = useState(null); // State για την αποθήκευση τυχόν σφαλμάτων
+  const [movies, setMovies] = useState([]); // State for storing movie list
+  const [loading, setLoading] = useState(false); // State for loading indication
+  const [error, setError] = useState(null); // State for storing any errors
 
-  // Συνάρτηση για την αναζήτηση ταινιών από την API
   const handleSearch = async (query) => {
-    setLoading(true); // Ορίζουμε την κατάσταση φόρτωσης σε true
-    setError(null); // Καθαρίζουμε τυχόν προηγούμενα σφάλματα
+    setLoading(true); // Set loading state to true
+    setError(null); // Clear any previous errors
 
     const { movies: fetchedMovies, error: fetchError } = await fetchMovies(query);
     
-    setMovies(fetchedMovies); // Ενημερώνουμε τη λίστα ταινιών
-    setError(fetchError); // Ενημερώνουμε το state με τυχόν σφάλματα
-    setLoading(false); // Ορίζουμε την κατάσταση φόρτωσης σε false
+    setMovies(fetchedMovies); // Update movie list
+    setError(fetchError); // Update error state
+    setLoading(false); // Set loading state to false
   };
 
   return (
     <div className="App">
       <h1>Movie Search App</h1>
-      {/* Παρέχουμε τη συνάρτηση handleSearch ως prop στο SearchBar component */}
       <SearchBar onSearch={handleSearch} />
-      {loading && <p>Loading...</p>} {/* Εμφάνιση μηνύματος φόρτωσης εάν το state loading είναι true */}
-      {error && <p style={{ color: 'red' }}>{error}</p>} {/* Εμφάνιση μηνύματος σφάλματος εάν υπάρχει */}
-      {/* Παρέχουμε τη λίστα ταινιών ως prop στο MovieList component */}
-      <MovieList movies={movies} />
+      <IncrementButton /> {/* Add IncrementButton component here */}
+      {loading && <p>Loading...</p>} {/* Display loading message if loading is true */}
+      {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error message if there is an error */}
+      <MovieList movies={movies} /> {/* Pass movie list as prop to MovieList component */}
     </div>
   );
 }
