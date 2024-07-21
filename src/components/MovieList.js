@@ -1,73 +1,64 @@
+// src/components/MovieList.js
 import React from 'react';
 import styled from 'styled-components';
 
-// Στυλ για το container του MovieList
 const MovieListWrapper = styled.div`
-  padding: 20px; // Προσθήκη padding γύρω από τη λίστα ταινιών
+  padding: 20px;
 `;
 
-// Στυλ για τη λίστα ταινιών
 const MovieListItems = styled.ul`
-  list-style-type: none; // Αφαίρεση της προεπιλεγμένης μορφοποίησης της λίστας (bullet points)
-  padding: 0; // Αφαίρεση του padding
-  margin: 0; // Αφαίρεση του margin
-  display: grid; // Χρήση grid layout για την οργάνωση των στοιχείων της λίστας
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); // Δημιουργία στήλων που προσαρμόζονται αυτόματα στο διαθέσιμο χώρο
-  gap: 15px; // Απόσταση μεταξύ των στοιχείων της λίστας
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
 `;
 
-// Στυλ για κάθε στοιχείο της λίστας ταινιών
 const MovieListItem = styled.li`
-  border: 1px solid #ddd; // Εξωτερικό περίγραμμα για το στοιχείο της λίστας
-  border-radius: 8px; // Στρογγυλεμένες γωνίες
-  overflow: hidden; // Απόκρυψη περιεχομένου που ξεφεύγει από τα όρια του στοιχείου
-  display: flex; // Χρήση flex layout για την τοποθέτηση του περιεχομένου
-  flex-direction: column; // Στοίχιση των παιδιών στοιχείων σε στήλη
-  background: #fff; // Λευκό φόντο
-  padding: 10px; // Padding γύρω από το περιεχόμενο
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding: 10px;
 `;
 
-// Στυλ για την αφίσα της ταινίας
 const MoviePoster = styled.img`
-  width: 100%; // Το πλάτος της αφίσας καλύπτει όλο το διαθέσιμο χώρο του στοιχείου της λίστας
-  height: auto; // Το ύψος της αφίσας προσαρμόζεται αυτόματα
-  border-bottom: 1px solid #ddd; // Περίγραμμα κάτω από την αφίσα
+  width: 100%;
+  height: auto;
+  border-bottom: 1px solid #ddd;
 `;
 
-// Στυλ για το container των λεπτομερειών της ταινίας
 const MovieDetails = styled.div`
-  display: flex; // Χρήση flex layout
-  flex-direction: column; // Στοίχιση των στοιχείων σε στήλη
-  padding: 10px; // Padding γύρω από το περιεχόμενο
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
 `;
 
-// Στυλ για τον τίτλο της ταινίας
 const MovieTitle = styled.h2`
-  font-size: 1.2em; // Μέγεθος γραμματοσειράς
-  margin: 0; // Αφαίρεση του περιθωρίου
+  font-size: 1.2em;
+  margin: 0;
 `;
 
-// Στυλ για το έτος της ταινίας
 const MovieYear = styled.p`
-  margin: 0; // Αφαίρεση του περιθωρίου
-  font-size: 0.9em; // Μέγεθος γραμματοσειράς
-  color: #555; // Χρώμα γραμματοσειράς
+  margin: 0;
+  font-size: 0.9em;
+  color: #555;
 `;
 
-// Στυλ για τον τύπο της ταινίας
 const MovieType = styled.p`
-  margin: 0; // Αφαίρεση του περιθωρίου
-  font-size: 0.9em; // Μέγεθος γραμματοσειράς
-  color: #555; // Χρώμα γραμματοσειράς
+  margin: 0;
+  font-size: 0.9em;
+  color: #555;
 `;
 
 // Το MovieList component δέχεται το prop movies
 function MovieList({ movies }) {
-  // Χρησιμοποιείς το prop movies για να εμφανίσεις ταινίες
   return (
     <MovieListWrapper>
       {movies.length > 0 ? (
-        // Εάν υπάρχουν ταινίες, εμφάνισέ τις σε grid μορφή
         <MovieListItems>
           {movies.map((movie) => (
             <MovieListItem key={movie.imdbID}>
@@ -81,7 +72,6 @@ function MovieList({ movies }) {
           ))}
         </MovieListItems>
       ) : (
-        // Εάν δεν υπάρχουν ταινίες, εμφάνισε μήνυμα
         <p>No movies found.</p>
       )}
     </MovieListWrapper>
