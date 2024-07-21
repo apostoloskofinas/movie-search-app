@@ -1,24 +1,35 @@
+// src/App.js
 import React, { useState } from 'react';
 import SearchBar from './components1/SearchBar';
 import MovieList from './components1/MovieList';
-import { fetchMovies } from './api/movieAPI'; // Import fetchMovies function
+import { fetchMovies } from './api/movieAPI';
 import IncrementButton from './components1/IncrementButton'; // Import IncrementButton component
 import './App.css';
 
 function App() {
-  const [movies, setMovies] = useState([]); // State for storing movie list
-  const [loading, setLoading] = useState(false); // State for loading indication
-  const [error, setError] = useState(null); // State for storing any errors
+  const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSearch = async (query) => {
-    setLoading(true); // Set loading state to true
-    setError(null); // Clear any previous errors
+    setLoading(true);
+    setError(null);
 
-    const { movies: fetchedMovies, error: fetchError } = await fetchMovies(query);
-    
-    setMovies(fetchedMovies); // Update movie list
-    setError(fetchError); // Update error state
-    setLoading(false); // Set loading state to false
+    // Split the query into individual search terms
+    const searchTerms = query.split(',').map(term => term.trim()).filter(term => term);
+
+    try {
+      // Create an array of promises for each search term
+      const results = await Promise.all(searchTerms.map(term => fetchMovies(term)));
+
+      // Aggregate results from all search terms
+      const allMovies = results.flatMap(result => result.movies);
+      setMovies(allMovies);
+    } catch (error) {
+      setError('Error fetching movies. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -26,9 +37,9 @@ function App() {
       <h1>Movie Search App</h1>
       <SearchBar onSearch={handleSearch} />
       <IncrementButton /> {/* Add IncrementButton component here */}
-      {loading && <p>Loading...</p>} {/* Display loading message if loading is true */}
-      {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error message if there is an error */}
-      <MovieList movies={movies} /> {/* Pass movie list as prop to MovieList component */}
+      {loading && <p>Loading...</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <MovieList movies={movies} />
     </div>
   );
 }
