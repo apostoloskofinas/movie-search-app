@@ -7,6 +7,8 @@ const API_KEY = process.env.REACT_APP_OMDB_APP_API_KEY;
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const fetchMovies = async (query) => {
     if (!query) {
@@ -14,6 +16,9 @@ function App() {
       return;
     }
   
+    setLoading(true);
+    setError(null);
+    
     try {
       const response = await fetch(`http://www.omdbapi.com/?s=${query}&apikey=${API_KEY}`);
       const data = await response.json();
@@ -23,8 +28,9 @@ function App() {
         setMovies([]);
       }
     } catch (error) {
-      console.error('Error fetching movies:', error);
-      setMovies([]); // Clear the movie list on error
+      setError('Error fetching movies. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };  
 
@@ -32,6 +38,8 @@ function App() {
     <div className="App">
       <h1>Movie Search App</h1>
       <SearchBar onSearch={fetchMovies} />
+      {loading && <p>Loading...</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <MovieList movies={movies} />
     </div>
   );
