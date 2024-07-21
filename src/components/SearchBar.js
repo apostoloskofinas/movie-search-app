@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 function SearchBar({ onSearch }) {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState('Batman'); //Set Default text in searchbar just for testing
 
   const handleChange = (event) => {
     setQuery(event.target.value);
